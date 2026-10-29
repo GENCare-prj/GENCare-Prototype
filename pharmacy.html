@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacy Portal | Unified Health ID</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f9f8;
+    color: #203a40;
+}
+
+header {
+    background: white;
+    padding: 20px 7%;
+    border-bottom: 1px solid #dce9e7;
+}
+
+header h2 {
+    color: #147d78;
+    font-size: 22px;
+}
+
+nav {
+    background: white;
+    padding: 0 7% 18px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #34575a;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #147d78;
+}
+
+main {
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 18px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #147d78;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.card {
+    background: white;
+    padding: 28px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #163c3c10;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #63787b;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 17px 0 8px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #cbdcda;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: 2px solid #a7d7ce;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #147d78;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0c625e;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.patient-details {
+    background: #eaf6f3;
+    border-radius: 9px;
+    padding: 16px;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    overflow-wrap: anywhere;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.badge-red { background: #d32f2f; }
+.badge-orange { background: #f57c00; }
+.badge-green { background: #2e9e4f; }
+.badge-grey { background: #63787b; }
+
+.notice {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 9px;
+    background: #fff8df;
+    border: 1px solid #efdfa6;
+    color: #79621d;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+@media(max-width: 600px) {
+    header { padding: 20px; }
+    nav { padding: 0 20px 18px; }
+    .card { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>Unified Health ID</h2>
+</header>
+
+<nav>
+    <a href="./index.html">Home</a>
+    <a href="./doctor.html">Doctor</a>
+    <a href="./patient.html">Patient</a>
+    <a href="./lab-center.html">Lab Center</a>
+    <a href="./register.html">Register</a>
+</nav>
+
+<main>
+
+    <a class="back-link" href="./index.html">← Back to Home</a>
+
+    <!-- STEP 1: PHARMACY LOGIN -->
+    <section class="card" id="loginSection">
+        <h1>Pharmacy Login</h1>
+        <p>
+            Authorized pharmacy staff must log in before accessing
+            a patient's prescription.
+        </p>
+
+        <form id="pharmacyLoginForm">
+            <label for="pharmacyId">Pharmacy ID</label>
+            <input
+                type="password"
+                id="pharmacyId"
+                placeholder="Enter Pharmacy ID"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">Login to Pharmacy →</button>
+            <p class="message" id="loginMessage" role="status"></p>
+        </form>
+
+        <div class="notice">
+            Demo Pharmacy ID: PHARM001
+        </div>
+    </section>
+
+    <!-- STEP 2: PATIENT ID -->
+    <section class="card hidden" id="patientSection">
+        <h1>Find Patient Prescription</h1>
+        <p>Enter the patient's five-digit ID to view their prescriptions.</p>
+
+        <form id="patientForm">
+            <label for="patientId">Patient ID Number</label>
+            <input
+                type="text"
+                id="patientId"
+                inputmode="numeric"
+                maxlength="5"
+                pattern="[0-9]{5}"
+                placeholder="Enter five-digit patient ID"
+                required
+            >
+
+            <button type="submit">View Their Prescription →</button>
+            <p class="message" id="patientMessage" role="status"></p>
+        </form>
+
+        <button type="button" id="logoutButton">Logout Pharmacy</button>
+    </section>
+
+    <!-- STEP 3: PRESCRIPTIONS -->
+    <section class="card hidden" id="prescriptionSection">
+        <h1>Patient Prescription</h1>
+
+        <div id="patientDetails" class="patient-details"></div>
+
+        <h2>Prescriptions</h2>
+        <div id="prescriptionList"></div>
+
+        <button type="button" id="searchAnother">
+            Search Another Patient
+        </button>
+    </section>
+
+</main>
+
+<script src="./data.js"></script>
+
+<script>
+function escapeHTML(value) {
+    if (typeof window.escapeHTML === "function") {
+        return window.escapeHTML(value == null ? "" : String(value));
+    }
+
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function(char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[char];
+    });
+}
+
+function doseBadge(level) {
+    const map = {
+        "High Dosage": "badge-red",
+        "Mild": "badge-orange",
+        "Safe": "badge-green"
+    };
+
+    return '<span class="badge ' +
+        (map[level] || "badge-grey") + '">' +
+        escapeHTML(level) + '</span>';
+}
+
+/* STEP 1: Verify pharmacy ID */
+
+document.getElementById("pharmacyLoginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const enteredId = document.getElementById("pharmacyId").value.trim();
+    const msg = document.getElementById("loginMessage");
+
+    if (enteredId !== "PHARM001") {
+        msg.textContent = "Invalid Pharmacy ID. Please try again.";
+        return;
+    }
+
+    msg.textContent = "";
+
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("patientSection").classList.remove("hidden");
+});
+
+/* STEP 2: Find patient and show prescriptions */
+
+document.getElementById("patientForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const msg = document.getElementById("patientMessage");
+
+    try {
+        const id = document.getElementById("patientId").value.trim();
+
+        if (!/^[0-9]{5}$/.test(id)) {
+            msg.textContent = "Patient ID must contain exactly five digits.";
+            return;
+        }
+
+        if (typeof loadDB !== "function") {
+            msg.textContent = "Database loader was not found in data.js.";
+            return;
+        }
+
+        const db = loadDB();
+        const patient = db.patients && db.patients[id];
+
+        if (!patient) {
+            msg.textContent = "No patient found with this ID.";
+            return;
+        }
+
+        document.getElementById("patientDetails").innerHTML =
+            "<strong>Patient Name:</strong> " + escapeHTML(patient.fullName) + "<br>" +
+            "<strong>Patient ID:</strong> " + escapeHTML(patient.id) + "<br>" +
+            "<strong>Age:</strong> " + escapeHTML(patient.age) + "<br>" +
+            "<strong>Height:</strong> " + escapeHTML(patient.height ? patient.height + " cm" : "N/A") + "<br>" +
+            "<strong>Weight:</strong> " + escapeHTML(patient.weight ? patient.weight + " kg" : "N/A") + "<br>" +
+            "<strong>Blood Group:</strong> " + escapeHTML(patient.bloodGroup || "N/A") + "<br>" +
+            "<strong>Allergies:</strong> " + escapeHTML(patient.allergies || "None recorded");
+
+        const list = Array.isArray(patient.prescriptions)
+            ? patient.prescriptions
+            : [];
+
+        document.getElementById("prescriptionList").innerHTML = list.length
+            ? list.map(function(p, i) {
+                let html = typeof prescriptionHTML === "function"
+                    ? prescriptionHTML(p, patient, i)
+                    : "<div class='patient-details'><strong>Prescription " +
+                      (i + 1) + "</strong><br>" +
+                      escapeHTML(p.diagnosis || p.title || "Prescription") +
+                      "<br>" +
+                      escapeHTML(p.medicines || p.items || "Details not provided") +
+                      "</div>";
+
+                if (p.dosageLevel) {
+                    html += '<p><strong>Dosage Range:</strong> ' +
+                        doseBadge(p.dosageLevel) + '</p>';
+                }
+
+                return html;
+            }).join("")
+            : "<p>No prescription has been saved for this patient yet.</p>";
+
+        msg.textContent = "";
+
+        document.getElementById("patientSection").classList.add("hidden");
+        document.getElementById("prescriptionSection").classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    } catch (error) {
+        msg.textContent = "Unable to load the patient record. Check data.js.";
+        console.error(error);
+    }
+});
+
+/* Search for another patient */
+
+document.getElementById("searchAnother").addEventListener("click", function() {
+    document.getElementById("prescriptionSection").classList.add("hidden");
+    document.getElementById("patientSection").classList.remove("hidden");
+    document.getElementById("patientForm").reset();
+    document.getElementById("patientMessage").textContent = "";
+    document.getElementById("patientId").focus();
+});
+
+/* Logout */
+
+document.getElementById("logoutButton").addEventListener("click", function() {
+    document.getElementById("patientSection").classList.add("hidden");
+    document.getElementById("prescriptionSection").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+
+    document.getElementById("pharmacyLoginForm").reset();
+    document.getElementById("patientForm").reset();
+
+    document.getElementById("loginMessage").textContent = "";
+    document.getElementById("patientMessage").textContent = "";
+});
+</script>
+
+</body>
+</html>

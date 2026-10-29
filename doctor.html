@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Portal | Unified Health ID</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f9f8;
+    color: #203a40;
+}
+
+header {
+    background: white;
+    padding: 22px 6%;
+    border-bottom: 1px solid #dce9e7;
+}
+
+header h2 {
+    color: #147d78;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 16px 6%;
+    background: white;
+}
+
+nav a {
+    text-decoration: none;
+    color: #34575a;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #147d78;
+}
+
+main {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 16px;
+}
+
+.card {
+    background: white;
+    padding: 26px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px #163c3c12;
+    margin-bottom: 22px;
+}
+
+.login-card {
+    max-width: 480px;
+    margin: 35px auto;
+}
+
+h1 {
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+h2 {
+    font-size: 20px;
+    color: #147d78;
+    margin: 18px 0 12px;
+}
+
+p {
+    color: #63787b;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 15px 0 7px;
+}
+
+input, select, textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid #cbdcda;
+    border-radius: 7px;
+    background: white;
+    font: inherit;
+    color: #203a40;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    border: 0;
+    border-radius: 7px;
+    padding: 12px 17px;
+    margin-top: 15px;
+    background: #147d78;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0c625e;
+}
+
+.full {
+    width: 100%;
+}
+
+.secondary {
+    background: #eaf6f3;
+    color: #147d78;
+}
+
+.secondary:hover {
+    background: #d8eee8;
+}
+
+.remove-btn {
+    background: #fdebea;
+    color: #b42318;
+    margin: 0;
+    padding: 9px 12px;
+}
+
+.remove-btn:hover {
+    background: #f8d8d6;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.message {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.notice {
+    background: #fff8df;
+    border: 1px solid #efdfa6;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #79621d;
+}
+
+.patient-details {
+    background: #eaf6f3;
+    border-radius: 9px;
+    padding: 17px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+    margin: 16px 0;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+table {
+    width: 100%;
+    min-width: 950px;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #dce9e7;
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background: #eaf6f3;
+    color: #176963;
+    font-size: 13px;
+}
+
+td input, td select {
+    min-width: 115px;
+    padding: 9px;
+}
+
+td:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+.saved-prescription {
+    border: 1px solid #dce9e7;
+    border-radius: 10px;
+    padding: 18px;
+    margin: 15px 0;
+}
+
+.saved-prescription p {
+    margin: 6px 0;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #eaf6f3;
+    color: #147d78;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.actions button {
+    flex: 1;
+}
+
+@media(max-width: 600px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        padding: 15px 20px;
+        gap: 13px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>✚ Unified Health ID</h2>
+</header>
+
+<nav>
+    <a href="./index.html">Home</a>
+    <a href="./patient.html">Patient</a>
+    <a href="./pharmacy.html">Pharmacy</a>
+    <a href="./lab-center.html">Lab Center</a>
+    <a href="./register.html">Register</a>
+</nav>
+
+<main>
+
+<!-- STEP 1: DOCTOR LOGIN -->
+
+<section class="card login-card" id="loginSection">
+    <h1>Doctor Login</h1>
+    <p>Enter your Doctor Licence ID to access patient medical records.</p>
+
+    <form id="doctorLoginForm">
+        <label for="doctorLicenceId">Doctor Licence ID</label>
+        <input
+            type="password"
+            id="doctorLicenceId"
+            placeholder="Enter Doctor Licence ID"
+            autocomplete="off"
+            required
+        >
+
+        <button type="submit" class="full">Login →</button>
+        <p id="loginMessage" class="message" role="status"></p>
+    </form>
+
+    <div class="notice">
+        Demo Doctor Licence ID: <strong>MED-DOC-001</strong>
+    </div>
+</section>
+
+<!-- STEP 2: SEARCH PATIENT -->
+
+<section class="card hidden" id="searchSection">
+    <h1>Find Patient</h1>
+    <p>Enter the patient's Health ID to view their medical record.</p>
+
+    <form id="patientForm">
+        <label for="patientId">Patient Health ID</label>
+        <input
+            type="text"
+            id="patientId"
+            inputmode="numeric"
+            maxlength="5"
+            pattern="[0-9]{5}"
+            placeholder="Enter 5-digit Patient ID"
+            required
+        >
+
+        <button type="submit" class="full">Search Patient →</button>
+        <p id="patientMessage" class="message" role="status"></p>
+    </form>
+
+    <button type="button" id="logoutSearch" class="full secondary">
+        Logout
+    </button>
+</section>
+
+<!-- STEP 3: PATIENT DETAILS AND PRESCRIPTIONS -->
+
+<section class="card hidden" id="patientSection">
+    <h1>Patient Medical Record</h1>
+
+    <div id="patientDetails" class="patient-details"></div>
+
+    <h2>Previous Prescriptions</h2>
+    <div id="prescriptionList"></div>
+
+    <div class="actions">
+        <button type="button" id="addPrescriptionButton">
+            + Create Prescription
+        </button>
+
+        <button type="button" id="changePatientButton" class="secondary">
+            Search Another Patient
+        </button>
+    </div>
+</section>
+
+<!-- STEP 4: PRESCRIPTION FORM -->
+
+<section class="card hidden" id="prescriptionSection">
+    <h1>Create Prescription</h1>
+    <p id="prescriptionPatient"></p>
+
+    <form id="prescriptionForm">
+
+        <label for="diagnosis">Diagnosis / Medical Condition</label>
+        <input
+            id="diagnosis"
+            placeholder="Enter diagnosis"
+            required
+        >
+
+        <h2>Medicine Details</h2>
+        <p>Add each prescribed medicine in a separate row.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>S. No.</th>
+                        <th>Medicine Name</th>
+                        <th>Before / After Food</th>
+                        <th>Dosage</th>
+                        <th>Dosage Range</th>
+                        <th>Duration</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+
+                <tbody id="medicineRows"></tbody>
+            </table>
+        </div>
+
+        <button type="button" id="addMedicineButton">
+            + Add Medicine
+        </button>
+
+        <label for="prescriptionNotes">Additional Instructions</label>
+        <textarea
+            id="prescriptionNotes"
+            rows="3"
+            placeholder="Follow-up instructions or other notes"
+        ></textarea>
+
+        <label for="prescriptionDate">Prescription Date</label>
+        <input type="date" id="prescriptionDate" required>
+
+        <button type="submit" class="full">Save Prescription →</button>
+        <button type="button" id="cancelPrescription" class="full secondary">
+            Cancel
+        </button>
+
+        <p id="saveMessage" class="message" role="status"></p>
+    </form>
+</section>
+
+</main>
+
+<script src="./data.js"></script>
+
+<script>
+let currentPatientId = "";
+
+function escapeHTML(value) {
+    return String(value == null || value === "" ? "N/A" : value)
+        .replace(/[&<>"']/g, function(char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char];
+        });
+}
+
+function showMessage(id, message, error = false) {
+    const element = document.getElementById(id);
+    element.textContent = message;
+    element.style.color = error ? "#b42318" : "#147d78";
+}
+
+function loadDatabase() {
+    if (typeof loadDB !== "function") {
+        throw new Error("loadDB() was not found. Please check data.js.");
+    }
+
+    return loadDB();
+}
+
+function saveDatabase(db) {
+    if (typeof saveDB === "function") {
+        saveDB(db);
+        return;
+    }
+
+    const key = typeof STORAGE_KEY !== "undefined"
+        ? STORAGE_KEY
+        : "unifiedHealthPrototype_v1";
+
+    localStorage.setItem(key, JSON.stringify(db));
+}
+
+function findPatient(db, id) {
+    if (!db || !db.patients) return null;
+
+    // Supports patients stored as an object keyed by patient ID.
+    if (!Array.isArray(db.patients) && db.patients[id]) {
+        return db.patients[id];
+    }
+
+    // Also supports patients stored as an array.
+    if (Array.isArray(db.patients)) {
+        return db.patients.find(function(patient) {
+            return String(patient.id) === String(id);
+        }) || null;
+    }
+
+    return null;
+}
+
+function getPrescriptions(patient) {
+    if (!Array.isArray(patient.prescriptions)) {
+        patient.prescriptions = [];
+    }
+
+    return patient.prescriptions;
+}
+
+/* DOCTOR LOGIN */
+
+document.getElementById("doctorLoginForm")
+.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const id = document.getElementById("doctorLicenceId").value.trim();
+
+    if (id !== "MED-DOC-001") {
+        showMessage(
+            "loginMessage",
+            "Invalid Doctor Licence ID. Please try again.",
+            true
+        );
+        return;
+    }
+
+    showMessage("loginMessage", "", false);
+
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("searchSection").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+});
+
+/* PATIENT SEARCH */
+
+document.getElementById("patientForm")
+.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const id = document.getElementById("patientId").value.trim();
+
+    if (!/^[0-9]{5}$/.test(id)) {
+        showMessage(
+            "patientMessage",
+            "Enter a valid five-digit Patient ID.",
+            true
+        );
+        return;
+    }
+
+    try {
+        const db = loadDatabase();
+        const patient = findPatient(db, id);
+
+        if (!patient) {
+            showMessage(
+                "patientMessage",
+                "Patient not found. Please check the ID.",
+                true
+            );
+            return;
+        }
+
+        currentPatientId = id;
+        renderPatient(patient);
+
+        document.getElementById("searchSection").classList.add("hidden");
+        document.getElementById("patientSection").classList.remove("hidden");
+        document.getElementById("prescriptionSection").classList.add("hidden");
+
+        window.scrollTo(0, 0);
+
+    } catch (error) {
+        showMessage("patientMessage", error.message, true);
+    }
+});
+
+/* DISPLAY PATIENT DETAILS */
+
+function renderPatient(patient) {
+    document.getElementById("patientDetails").innerHTML = `
+        <strong>Patient Name:</strong> ${escapeHTML(patient.fullName)}<br>
+        <strong>Patient ID:</strong> ${escapeHTML(patient.id)}<br>
+        <strong>Age:</strong> ${escapeHTML(patient.age)}<br>
+        <strong>Height:</strong> ${escapeHTML(patient.height ? patient.height + " cm" : "N/A")}<br>
+        <strong>Weight:</strong> ${escapeHTML(patient.weight ? patient.weight + " kg" : "N/A")}<br>
+        <strong>Blood Group:</strong> ${escapeHTML(patient.bloodGroup)}<br>
+        <strong>Allergies:</strong> ${escapeHTML(patient.allergies || "None recorded")}
+    `;
+
+    renderPrescriptions(patient);
+}
+
+/* DISPLAY SAVED PRESCRIPTIONS */
+
+function renderPrescriptions(patient) {
+    const list = document.getElementById("prescriptionList");
+    const prescriptions = getPrescriptions(patient);
+
+    if (prescriptions.length === 0) {
+        list.innerHTML = "<p>No prescriptions saved yet.</p>";
+        return;
+    }
+
+    list.innerHTML = prescriptions.map(function(prescription, index) {
+        let medicines = prescription.medicines;
+
+        // Supports prescriptions saved by this page as an array of medicine rows.
+        if (!Array.isArray(medicines)) {
+            medicines = Array.isArray(prescription.items)
+                ? prescription.items
+                : [];
+        }
+
+        let tableRows = "";
+
+        if (medicines.length) {
+            tableRows = medicines.map(function(medicine, i) {
+                return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${escapeHTML(medicine.name)}</td>
+                        <td>${escapeHTML(medicine.foodTiming)}</td>
+                        <td>${escapeHTML(medicine.dosage)}</td>
+                        <td>${escapeHTML(medicine.dosageRange)}</td>
+                        <td>${escapeHTML(medicine.duration)}</td>
+                    </tr>
+                `;
+            }).join("");
+        } else if (typeof prescription.medicines === "string") {
+            // Display older prescriptions saved as plain text.
+            tableRows = `
+                <tr>
+                    <td>1</td>
+                    <td colspan="5">${escapeHTML(prescription.medicines)}</td>
+                </tr>
+            `;
+        }
+
+        return `
+            <article class="saved-prescription">
+                <h3>Prescription ${index + 1}</h3>
+                <p><strong>Date:</strong> ${escapeHTML(prescription.date)}</p>
+                <p><strong>Diagnosis:</strong> ${escapeHTML(prescription.diagnosis)}</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Medicine Name</th>
+                                <th>Before / After Food</th>
+                                <th>Dosage</th>
+                                <th>Dosage Range</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows || '<tr><td colspan="6">No medicine details recorded.</td></tr>'}</tbody>
+                    </table>
+                </div>
+
+                <p><strong>Additional Instructions:</strong> ${escapeHTML(prescription.notes)}</p>
+                <span class="status">Saved</span>
+            </article>
+        `;
+    }).join("");
+}
+
+/* ADD A MEDICINE ROW */
+
+function addMedicineRow(values = {}) {
+    const tbody = document.getElementById("medicineRows");
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td class="serial-number"></td>
+
+        <td>
+            <input
+                type="text"
+                class="medicine-name"
+                placeholder="Medicine name"
+                aria-label="Medicine name"
+                required
+            >
+        </td>
+
+        <td>
+            <select class="food-timing" aria-label="Food timing" required>
+                <option value="">Select</option>
+                <option value="Before Food">Before Food</option>
+                <option value="After Food">After Food</option>
+                <option value="With Food">With Food</option>
+            </select>
+        </td>
+
+        <td>
+            <input
+                type="text"
+                class="medicine-dosage"
+                placeholder="e.g. 1 tablet"
+                aria-label="Dosage"
+                required
+            >
+        </td>
+
+        <td>
+            <input
+                type="text"
+                class="dosage-range"
+                placeholder="e.g. Morning"
+                aria-label="Dosage range"
+                required
+            >
+        </td>
+
+        <td>
+            <input
+                type="text"
+                class="medicine-duration"
+                placeholder="e.g. 5 days"
+                aria-label="Duration"
+                required
+            >
+        </td>
+
+        <td>
+            <button type="button" class="remove-btn" aria-label="Remove medicine">
+                Remove
+            </button>
+        </td>
+    `;
+
+    row.querySelector(".medicine-name").value = values.name || "";
+    row.querySelector(".food-timing").value = values.foodTiming || "";
+    row.querySelector(".medicine-dosage").value = values.dosage || "";
+    row.querySelector(".dosage-range").value = values.dosageRange || "";
+    row.querySelector(".medicine-duration").value = values.duration || "";
+
+    row.querySelector(".remove-btn").addEventListener("click", function() {
+        row.remove();
+        updateSerialNumbers();
+    });
+
+    tbody.appendChild(row);
+    updateSerialNumbers();
+}
+
+function updateSerialNumbers() {
+    document.querySelectorAll("#medicineRows tr").forEach(function(row, index) {
+        row.querySelector(".serial-number").textContent = index + 1;
+    });
+}
+
+document.getElementById("addMedicineButton")
+.addEventListener("click", function() {
+    addMedicineRow();
+});
+
+/* OPEN PRESCRIPTION FORM */
+
+document.getElementById("addPrescriptionButton")
+.addEventListener("click", function() {
+    document.getElementById("prescriptionForm").reset();
+    document.getElementById("medicineRows").innerHTML = "";
+
+    document.getElementById("prescriptionPatient").textContent =
+        "Patient Health ID: " + currentPatientId;
+
+    document.getElementById("prescriptionDate").value =
+        new Date().toISOString().slice(0, 10);
+
+    addMedicineRow();
+
+    showMessage("saveMessage", "", false);
+
+    document.getElementById("patientSection").classList.add("hidden");
+    document.getElementById("prescriptionSection").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+});
+
+/* SAVE PRESCRIPTION */
+
+document.getElementById("prescriptionForm")
+.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!currentPatientId) {
+        showMessage("saveMessage", "Please select a patient first.", true);
+        return;
+    }
+
+    const medicineRows = Array.from(
+        document.querySelectorAll("#medicineRows tr")
+    );
+
+    if (medicineRows.length === 0) {
+        showMessage("saveMessage", "Add at least one medicine row.", true);
+        return;
+    }
+
+    const medicines = medicineRows.map(function(row) {
+        return {
+            name: row.querySelector(".medicine-name").value.trim(),
+            foodTiming: row.querySelector(".food-timing").value,
+            dosage: row.querySelector(".medicine-dosage").value.trim(),
+            dosageRange: row.querySelector(".dosage-range").value.trim(),
+            duration: row.querySelector(".medicine-duration").value.trim()
+        };
+    });
+
+    const prescription = {
+        date: document.getElementById("prescriptionDate").value,
+        diagnosis: document.getElementById("diagnosis").value.trim(),
+        medicines: medicines,
+        notes: document.getElementById("prescriptionNotes").value.trim()
+    };
+
+    if (!prescription.date || !prescription.diagnosis) {
+        showMessage("saveMessage", "Please complete the required fields.", true);
+        return;
+    }
+
+    if (medicines.some(function(medicine) {
+        return !medicine.name ||
+               !medicine.foodTiming ||
+               !medicine.dosage ||
+               !medicine.dosageRange ||
+               !medicine.duration;
+    })) {
+        showMessage(
+            "saveMessage",
+            "Complete every field in each medicine row.",
+            true
+        );
+        return;
+    }
+
+    try {
+        const db = loadDatabase();
+        const patient = findPatient(db, currentPatientId);
+
+        if (!patient) {
+            showMessage("saveMessage", "Patient record not found.", true);
+            return;
+        }
+
+        getPrescriptions(patient).push(prescription);
+        saveDatabase(db);
+
+        renderPatient(patient);
+
+        document.getElementById("prescriptionForm").reset();
+        document.getElementById("prescriptionSection").classList.add("hidden");
+        document.getElementById("patientSection").classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    } catch (error) {
+        showMessage(
+            "saveMessage",
+            "Could not save prescription: " + error.message,
+            true
+        );
+    }
+});
+
+/* CANCEL PRESCRIPTION */
+
+document.getElementById("cancelPrescription")
+.addEventListener("click", function() {
+    document.getElementById("prescriptionSection").classList.add("hidden");
+    document.getElementById("patientSection").classList.remove("hidden");
+});
+
+/* SEARCH ANOTHER PATIENT */
+
+document.getElementById("changePatientButton")
+.addEventListener("click", function() {
+    currentPatientId = "";
+    document.getElementById("patientForm").reset();
+
+    showMessage("patientMessage", "", false);
+
+    document.getElementById("patientSection").classList.add("hidden");
+    document.getElementById("searchSection").classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+});
+
+/* LOGOUT */
+
+function logoutDoctor() {
+    currentPatientId = "";
+
+    document.getElementById("doctorLoginForm").reset();
+    document.getElementById("patientForm").reset();
+    document.getElementById("prescriptionForm").reset();
+
+    document.getElementById("loginSection").classList.remove("hidden");
+    document.getElementById("searchSection").classList.add("hidden");
+    document.getElementById("patientSection").classList.add("hidden");
+    document.getElementById("prescriptionSection").classList.add("hidden");
+
+    showMessage("loginMessage", "", false);
+    showMessage("patientMessage", "", false);
+    showMessage("saveMessage", "", false);
+
+    window.scrollTo(0, 0);
+}
+
+document.getElementById("logoutSearch")
+.addEventListener("click", logoutDoctor);
+</script>
+
+</body>
+</html>
